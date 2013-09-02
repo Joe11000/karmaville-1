@@ -1,7 +1,7 @@
 class User < ActiveRecord::Base
   has_many :karma_points
 
-  attr_accessible :first_name, :last_name, :email, :username
+  attr_accessible :first_name, :last_name, :email, :username, :karma
 
   validates :first_name, :presence => true
   validates :last_name, :presence => true
@@ -18,7 +18,7 @@ class User < ActiveRecord::Base
             :uniqueness => {:case_sensitive => false}
 
   def self.by_karma
-    joins(:karma_points).group('users.id').order('SUM(karma_points.value) DESC').limit(50)
+    joins(:karma_points).group('users.id').order('SUM(karma_points.value) DESC')
   end
 
   def total_karma
@@ -28,4 +28,9 @@ class User < ActiveRecord::Base
   def full_name
     "#{first_name} #{last_name}"
   end
+
+  # Joe added method below
+  # def self.recalculate_karma_value
+  #   self.update(karma: karma_points.reduce(:+))
+  # end
 end
