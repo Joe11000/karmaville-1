@@ -21,7 +21,7 @@ ActiveRecord::Schema.define(:version => 20130902180003) do
     t.datetime "updated_at", :null => false
   end
 
-  add_index "karma_points", ["value", "user_id"], :name => "index_karma_points_on_value_and_user_id"
+  add_index "karma_points", ["user_id", "value"], :name => "index_karma_points_on_user_id_and_value"
 
   create_table "users", :force => true do |t|
     t.string   "first_name",               :null => false

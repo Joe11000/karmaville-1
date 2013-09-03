@@ -17,33 +17,23 @@ class User < ActiveRecord::Base
             :format => {:with => /^[\w+\-.]+@[a-z\d\-.]+\.[a-z]+$/i},
             :uniqueness => {:case_sensitive => false}
 
-  before_save :update_karma
+  # before_save :update_karma
 
   def self.by_karma
-    # joins(:karma_points).group('users.id').order('SUM(karma_points.value) DESC')
-    User.order("karma DESC")
+    self.order("karma DESC")
   end
 
   def total_karma
-    self.karma
+    self.karma_points.sum(:value)
   end
 
   def full_name
     "#{first_name} #{last_name}"
   end
 
-  # def self.page(page_number)
-  #   if ! page_number
-  #     render users_url
-  #   end
-  # end
-
-  def update_karma
-    self.karma = self.total_karma
+  def self.page(page_number, page_size=50)
+    if page_number > 0
+       User.by_karma.limit(page_size).offset(page_size * page_number)
+    end
   end
-
-  # Joe added method below
-  # def self.recalculate_karma_value
-  #   self.update(karma: karma_points.reduce(:+))
-  # end
 end
