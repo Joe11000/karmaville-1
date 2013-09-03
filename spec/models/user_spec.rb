@@ -48,4 +48,18 @@ describe User do
       user.full_name.should eq 'John Doe'
     end
   end
+
+  describe '.page' do
+    it 'returns that page of users' do
+      User.by_karma.page(3).should include(User.by_karma[127]) #should have user
+    end
+
+    it "should return the first page" do
+      User.by_karma.page.should include(User.by_karma.first)
+    end
+
+    it "should not contain the 51st element" do
+      expect{User.by_karma.page.should include(User.by_karma[50])}.to be_false
+    end
+  end
 end

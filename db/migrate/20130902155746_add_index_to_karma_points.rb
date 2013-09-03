@@ -1,5 +1,5 @@
 class AddIndexToKarmaPoints < ActiveRecord::Migration
   def change
-    add_index :karma_points, [:value, :user_id]
+    add_index :karma_points, :karma_points, [:value, :user_id]
   end
 end
